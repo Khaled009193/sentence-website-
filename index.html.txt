@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Editor</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f4f4f4;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .toolbar, .buttons {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .toolbar select,
+    .toolbar button,
+    .toolbar input[type="color"],
+    .buttons button {
+      margin: 5px;
+      padding: 8px 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    .toolbar button,
+    .buttons button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    .toolbar button:hover,
+    .buttons button:hover {
+      background-color: #388e3c;
+    }
+
+    #editor {
+      width: 100%;
+      height: 65vh;
+      padding: 15px;
+      font-size: 18px;
+      background-color: white;
+      color: #000;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-sizing: border-box;
+      overflow-y: auto;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark #editor {
+      background-color: #2a2a2a;
+      color: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text Editor</h1>
+  
+  <!-- Toolbar Section -->
+  <div class="toolbar">
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <input type="color" id="colorPicker" value="#000000" onchange="changeTextColor()">
+    <select id="fontSizeSelect" onchange="changeFontSize()">
+      <option value="16">Font Size: 16px</option>
+      <option value="20">Font Size: 20px</option>
+      <option value="24">Font Size: 24px</option>
+      <option value="28">Font Size: 28px</option>
+    </select>
+  </div>
+
+  <!-- Text Area -->
+  <textarea id="editor" placeholder="Start typing here..."></textarea>
+
+  <!-- Buttons Section -->
+  <div class="buttons">
+    <button onclick="downloadTextAsPDF()">Download as PDF</button>
+  </div>
+
+  <script>
+    // Toggle Dark Mode
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+    }
+
+    // Change Text Color
+    function changeTextColor() {
+      var color = document.getElementById('colorPicker').value;
+      document.getElementById('editor').style.color = color;
+    }
+
+    // Change Font Size
+    function changeFontSize() {
+      var fontSize = document.getElementById('fontSizeSelect').value;
+      document.getElementById('editor').style.fontSize = fontSize + 'px';
+    }
+
+    // Download Text as PDF
+    function downloadTextAsPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      const text = document.getElementById('editor').value;
+      doc.text(text, 10, 10);
+      doc.save('text-editor.pdf');
+    }
+  </script>
+</body>
+</html>
